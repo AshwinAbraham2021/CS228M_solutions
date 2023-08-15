@@ -38,7 +38,6 @@ pdfpagemode=FullScreen,
 \date[2023]
 {15th August, 2023}
 
-% \logo{\includegraphics[height=2cm]{iitb-logo.png}}
 
 
 \begin{document}
@@ -51,15 +50,6 @@ pdfpagemode=FullScreen,
 
     \section{Question 1}
     {
-        % \begin{frame}{Question 1 - Question}
-        %     This summer, I along with a friend visited the island of \textit{Azbycxdwevfu}, known for its great natural beauty. The local inhabitants are all tribals, and there are 3 tribes : \textit{Angels}, \textit{Vampires}, and \textit{Normals}. The \textit{Angels} are known to be \textit{always} truthful, and are peace-loving; the \textit{Vampires} are known to \textit{always} lie and are cruel; the \textit{Normals} are like normal human beings, they sometimes lie, and sometimes speak the truth. Their actions are also unpredictable. The members of each tribe have distinct tattoos on their bodies, and this was the only way we (my friend and I) could say whether two people belonged to the same tribe or not. Fortunately for us, all the \textit{Vampires} had gone to the adjacent island to celebrate a festival.
-        % \end{frame}
-    
-        % \begin{frame}{Question 1 - Question}
-        %     One day, I went out all by myself to a nearby rivulet. By the time I started back, it was quite dark, and I lost my way. After wandering for a long time, I saw two people $A$, $B$ standing on a hillock; the inscriptions on their body told me that they belonged to diﬀerent tribes. I wanted to ﬁnd out which one belonged to the tribe of \textit{Angels}, so that he could help me ﬁnd my way back. I went and asked $A$ whether $B$ belonged to the \textit{Normals}. He answered me yes or no, and from that I ﬁgured out who was an \textit{Angel}. Who is who?\\
-
-        %     Formalise the above in propositional logic and ﬁnd the solution.
-        % \end{frame}
         \begin{frame}{Question 1}
             We know that all people involved in this story are either \textit{Angels} or \textit{Normals}, since there are no \textit{Vampires} on the island currently. We can therefore ignore the \textit{Vampires}.
 
@@ -182,10 +172,6 @@ pdfpagemode=FullScreen,
     \section{Question 5}
     {
         \begin{frame}{Question 5}
-            % We will use\footnote{It has been used implicitly in multiple places in the slides. For those who want a more solid grounding on the formal proof system, \href[]{https://www.cse.iitb.ac.in/~akg/courses/2023-logic/}{check this out}.} the following proof rule along with the proof rules mentioned in the slides (call it \textit{By Cases}).
-            % \begin{equation*}
-            %     \frac{\mathcal{H} \cup \{\varphi\} \vdash \psi, \mathcal{H} \cup \{\neg \varphi\} \vdash \psi}{\mathcal{H} \vdash \psi}
-            % \end{equation*}
             Proof:         
             \begin{enumerate}
                 \item $\{(p \implies q) \implies q, q \implies p, \neg p, p\} \vdash p$ (Assumption)
@@ -203,32 +189,9 @@ pdfpagemode=FullScreen,
                 \item $\{(p \implies q) \implies q, q \implies p\} \vdash p$ ($\neg \neg$ elimination on 12)
                 \item $\{(p \implies q) \implies q\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 13)
                 \item $\emptyset \vdash \left[(p \implies q) \implies q\right] \implies \left[(q \implies p) \implies p\right]$ ($\implies$ intr on 14)
-                % \item $\{(p \implies q) \implies q\} \vdash q \lor \neg q$ (Excluded Middle)
-                % \item $\{(p \implies q) \implies q, q\} \vdash q$ (Assumption)
-                % \item $\{(p \implies q) \implies q, q\} \vdash p \lor q$ ($\lor$ introduction on 3)
-                % \item $\{(p \implies q) \implies q, \neg q\} \vdash \neg q$ (Assumption)
-                % \item $\{(p \implies q) \implies q, \neg q\} \vdash (p \implies q) \implies q$ (Assumption)
-                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p \implies q$ (Modus Tollens on 3, 4)
-                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p$ (Modus Tollens on 3, 5)
-                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p \lor q$ ($\lor$ introduction on 6)
-                % \item $\{(p \implies q) \implies q\} \vdash p \lor q$ (By Cases on 2, 7)
             \end{enumerate}
             $\qed$
         \end{frame}
-        % \begin{frame}{Question 5}
-        %     \begin{enumerate}
-        %         \setcounter{enumi}{8}
-        %         \item $\{(p \implies q) \implies q, q \implies p, p\} \vdash p$ (Assumption)
-        %         \item $\{(p \implies q) \implies q, p\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 9)
-        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash q$ (Assumption)
-        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash q \implies p$ (Assumption)
-        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash p$ (Modus Ponens on 11, 12)
-        %         \item $\{(p \implies q) \implies q, q\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 13)
-        %         \item $\{(p \implies q) \implies q\} \vdash (q \implies p) \implies p$ ($\lor$ elim on 8, 10, 14)
-        %         \item $\vdash \left[(p \implies q) \implies q\right] \implies \left[(q \implies p) \implies p\right]$ ($\implies$ intro on 15)
-        %     \end{enumerate}
-        %     $\qed$
-        % \end{frame}
     }
     \section{Question 6}
     {
@@ -275,60 +238,6 @@ pdfpagemode=FullScreen,
     }
     \section{Question 8}
     {
-        % \begin{frame}{Question 8}
-        %     We assume that "rules of natural deduction corresponding to disjunction and negation" include the proof rule known as \textit{Unit Resolution}.
-        %     \begin{equation*}
-        %         \frac{\mathcal{H} \vdash \neg\varphi \lor \psi, \mathcal{H} \vdash \varphi}{\mathcal{H} \vdash \psi}
-        %     \end{equation*}
-        %     % This can be proven using all the rules as follows:
-        %     and the proof rule known as \textit{Tautology}
-        %     \begin{equation*}
-        %         \frac{}{\mathcal{H}\vdash \neg\varphi \lor \varphi}
-        %     \end{equation*}
-        %     in addition to the other rules covered in the slides.
-
-        %     We abuse notation slightly, and use $\mathcal{L}$ to also refer to the set of axioms of $\mathcal{L}$.
-        % \end{frame}
-        % \begin{frame}{Question 8}
-        %     We will use the derived rule known as \textit{Unit Resolution}.
-        %     \begin{equation*}
-        %         \frac{\mathcal{H} \vdash \neg\varphi \lor \psi, \mathcal{H} \vdash \varphi}{\mathcal{H} \vdash \psi}
-        %     \end{equation*}
-        %     % \vspace*{-5pt}
-        %     Proof:
-        %     \begin{enumerate}
-        %         \item $\mathcal{H} \vdash \neg \varphi \lor \psi$ (Premise)
-        %         \item $\mathcal{H} \vdash \varphi$ (Premise)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \varphi$ (Assumption)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \neg \varphi$ (Assumption)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \bot$ ($\bot$ introduction on 3, 4)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \psi$ (Assumption)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \neg \psi$ (Assumption)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \bot$ ($\bot$ introduction on 6, 7)
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi\} \vdash \neg \varphi \lor \psi$ (Monotonicity on 1)
-        %     \end{enumerate}
-        % \end{frame}
-        % \begin{frame}{Question 8}
-        %     \begin{enumerate}
-        %         \setcounter{enumi}{10}
-        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi\} \vdash \bot$ ($\lor$ elimination on 9, 5, 8)
-        %         \item $\mathcal{H} \cup \{\varphi\} \vdash \neg \neg \psi$ (By contradiction on 10)
-        %         \item $\mathcal{H} \cup \{\varphi\} \vdash \psi$ ($\neg \neg$ elimination on 11)
-        %         \item $\mathcal{H} \vdash \varphi \implies \psi$ ($\implies$ introduction on 12)
-        %         \item $\mathcal{H} \vdash \psi$ (Modus Ponens on 2, 13)
-        %     \end{enumerate}
-        %     $\qed$
-
-        %     We abuse notation slightly, and use $\mathcal{L}$ to also refer to the set of axioms of $\mathcal{L}$.
-        %     For any formula $\varphi$, note that $\neg \left(\neg \varphi \lor \varphi\right) \lor (\varphi \lor \varphi) \in \mathcal{L}$. We show that $\mathcal{L} \vdash \varphi$.
-
-        %     Proof:
-        %     \begin{enumerate}
-        %         \item $\mathcal{L} \vdash \neg \left(\neg \varphi \lor \varphi\right) \lor (\varphi \lor \varphi)$ (Assumption)
-        %         \item $\mathcal{L} \vdash \neg \varphi \lor \varphi$ (Excluded Middle)
-        %         \item $\mathcal{L} \vdash \varphi \lor $
-        %     \end{enumerate}
-        % \end{frame}
         \begin{frame}{Question 8}
             We abuse notation slightly by using $\mathcal{L}$ to also refer to the axiom set. For any formulae $A$, $B$, $C$, we have $\neg \left(A \lor B\right) \lor (B \lor C) \in \mathcal{L}$. We also assume that the proof rules of $\bot$, $\lor$ and $\neg$ are still present in this system.
 
