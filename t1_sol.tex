@@ -1,0 +1,363 @@
+% AUTHOR: ASHWIN ABRAHAM
+
+\documentclass{beamer}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage{hyperref}
+\hypersetup
+{
+colorlinks=true,
+linkcolor=blue,
+filecolor=magenta,      
+urlcolor=cyan,
+pdftitle={Parameterized verification through view abstraction},
+pdfpagemode=FullScreen,
+}
+\usepackage[utf8]{inputenc}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+
+\title[] 
+{\textbf{CS 228 (M) - Logic in CS}\\Tutorial I - Solutions}
+
+
+\author[Ashwin Abraham] 
+{Ashwin Abraham}
+
+\institute[] 
+{
+    IIT Bombay
+}
+
+\date[2023]
+{15th August, 2023}
+
+% \logo{\includegraphics[height=2cm]{iitb-logo.png}}
+
+
+\begin{document}
+    \frame{\titlepage}
+
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents    
+    \end{frame}
+
+    \section{Question 1}
+    {
+        % \begin{frame}{Question 1 - Question}
+        %     This summer, I along with a friend visited the island of \textit{Azbycxdwevfu}, known for its great natural beauty. The local inhabitants are all tribals, and there are 3 tribes : \textit{Angels}, \textit{Vampires}, and \textit{Normals}. The \textit{Angels} are known to be \textit{always} truthful, and are peace-loving; the \textit{Vampires} are known to \textit{always} lie and are cruel; the \textit{Normals} are like normal human beings, they sometimes lie, and sometimes speak the truth. Their actions are also unpredictable. The members of each tribe have distinct tattoos on their bodies, and this was the only way we (my friend and I) could say whether two people belonged to the same tribe or not. Fortunately for us, all the \textit{Vampires} had gone to the adjacent island to celebrate a festival.
+        % \end{frame}
+    
+        % \begin{frame}{Question 1 - Question}
+        %     One day, I went out all by myself to a nearby rivulet. By the time I started back, it was quite dark, and I lost my way. After wandering for a long time, I saw two people $A$, $B$ standing on a hillock; the inscriptions on their body told me that they belonged to diﬀerent tribes. I wanted to ﬁnd out which one belonged to the tribe of \textit{Angels}, so that he could help me ﬁnd my way back. I went and asked $A$ whether $B$ belonged to the \textit{Normals}. He answered me yes or no, and from that I ﬁgured out who was an \textit{Angel}. Who is who?\\
+
+        %     Formalise the above in propositional logic and ﬁnd the solution.
+        % \end{frame}
+        \begin{frame}{Question 1}
+            We know that all people involved in this story are either \textit{Angels} or \textit{Normals}, since there are no \textit{Vampires} on the island currently. We can therefore ignore the \textit{Vampires}.
+
+            Let $Ang(x)$ represent the proposition that person $x$ is an \textit{Angel} and $Norm(x)$ represent the proposition that person $x$ is a \textit{Normal}. For every person $x$ we are concerned with, if they are not an \textit{Angel}, they are a \textit{Normal}, and vice versa. Therefore, we have $$Norm(x) \equiv \neg Ang(x)$$%Let us therefore work with $Ang(x)$.
+        \end{frame}
+        \begin{frame}{Question 1}
+            From the question, we know that $A$ and $B$ are from different tribes, therefore $$Ang(A) \iff \neg Ang(B)$$.
+
+            Let $P$ represent $A$'s answer to our question ("yes" corresponding to \textbf{true} and "no" corresponding to \textbf{false}). We know that if $A$ is an \textit{Angel} then his answer is truthful, ie we have $$Ang(A) \implies (P \iff Norm(B))$$rewriting $Norm(B)$ as $\neg Ang(B)$ and including the previous constraint we get our final constraint as:
+            \begin{equation*}
+                \boxed{\left[Ang(A) \iff \neg Ang(B)\right] \land \left[Ang(A) \implies \left[P \iff \neg Ang(B)\right]\right]}
+            \end{equation*}
+        \end{frame}
+        \begin{frame}{Question 1}
+            The last thing we need to use to solve this puzzle is the fact that after we heard $A$'s answer, we were able to figure out who is who, ie after we found the value of $P$, we were also able to find a \textbf{unique solution} for $Ang(A)$ and $Ang(B)$.
+
+            You can verify that the truth values of $P, Ang(A), Ang(B)$ that satisfy the constraint are:
+            \begin{enumerate}
+                \item $(P, Ang(A), Ang(B)) = (T, T, F)$
+                \item $(P, Ang(A), Ang(B)) = (T, F, T)$
+                \item $(P, Ang(A), Ang(B)) = (F, F, T)$
+            \end{enumerate}
+            Clearly, the solution for $(Ang(A), Ang(B))$ is unique iff $P$ is \textbf{false}, and the unique solution is $(P, Ang(A), Ang(B)) = (F, F, T)$.
+
+            Therefore, $A$ is a \textit{Normal}, $B$ is an $\textit{Angel}$ and when asked, $A$ (truthfully!) told us that $B$ was not a \textit{Normal}.
+        \end{frame}
+    }
+
+    \section{Question 2}
+    {
+        \begin{frame}{Question 2}
+            Let's say the people in the hall are numbered from $0 \dots n - 1$, where you are person $0$. Let $L_{i}$ represent the proposition that person $i$ is a liar. $L_{0}$ is known to us, and we also know that the total number of liars in the hall is even. This can be written as\footnote{It can be shown that $\bigoplus_{i = 1}^{n} x_{i}$ is true precisely when an odd number of $x_{i}$ are true. I am also abusing notation slightly by using $=$ instead of $\iff$}:
+            \begin{equation*}
+                L_{0} = \bigoplus\limits_{i = 1}^{n - 1} L_{i}
+            \end{equation*}
+
+            Let $Q_{i}$ represent the response of the $i^{th}$ person to our question. If we knew both $L_{i}$ and $Q_{i}$ for any person, then what we require is just $L_{i} \oplus Q_{i}$. Note that $L_{i} \oplus Q_{i}$ must be the \textbf{same} for every person $i$. Call this quantity $P$.
+            \begin{equation*}
+                P = L_{i} \oplus Q_{i}, \forall i \in \{0 \dots n - 1\}
+            \end{equation*}
+            $P$ is what we want to find.
+        \end{frame}
+        \begin{frame}{Question 2}
+            However, we do not know both $L_{i}$ and $Q_{i}$ for any given person $i$. We know $L_{0}$ and can choose some $i \in \{1 \dots n - 1\}$ and find the corresponding $L_{i}$. We can find $Q_{j}$ for any $j \neq 0, i$ where $i$ was the number chosen earlier.
+            
+            Our strategy is as follows:
+
+            If $n$ is even, we do not ask anyone if they are a liar but instead ask everyone the question, and obtain $Q_{i}, \forall i \in \{1 \dots n - 1\}$.
+            Now, applying $\oplus$ on the last equation for all $i \in \{1 \dots n - 1\}$, we get
+            \begin{equation*}
+                P = \left(\bigoplus\limits_{i = 1}^{n - 1} L_{i}\right) \oplus \left(\bigoplus\limits_{i = 1}^{n - 1} Q_{i}\right) = L_{0} \oplus \left(\bigoplus\limits_{i = 1}^{n - 1} Q_{i}\right)
+            \end{equation*}
+            and we can hence obtain $P$.
+        \end{frame}
+        \begin{frame}{Question 2}
+            If $n$ is odd, we pick an arbitrary $j \in \{1 \dots n - 1\}$ and ask person $j$ if she is a liar. We ask every other person the question. Therefore, we know $Q_{j}$ $\forall j \in \{1 \dots n - 1\} - \{j\}$ and $L_{j}$.
+            Now,
+            \begin{equation*}
+                L_{0} \oplus L_{j} = \bigoplus\limits_{\substack{i = 1\\i \neq j}}^{n - 1} L_{i}
+            \end{equation*}
+            Therefore, on similar lines as before, we get
+            \begin{equation*}
+                P = L_{0} \oplus L_{j} \oplus \left(\bigoplus\limits_{\substack{i = 1\\i \neq j}}^{n - 1} Q_{i}\right)
+            \end{equation*}
+        \end{frame}
+    }
+    \section{Question 3}
+    {
+        \begin{frame}{Question 3}
+            Note that if $B$ is a knight, then $A$ must be a knave, which makes her statement that $B$ is a knight false, which contradicts the fact that $B$ is a knight. Therefore $B$ is not a knight. This means $A$'s statement is false, which means $A$ is also not a knight. So both are either normals or knaves, and $A$'s statement is false. Let us take some cases now:
+            \begin{enumerate}
+                \item If $A$ is a knave, then $B$'s statement is true, which means $B$ must be a normal. This means one of them ($B$) told the truth but is not a knight.
+                \item If $B$ is a knave, then $A$ must be a normal. This means one of them ($A$) told a lie but is not a knave.
+                \item If both $A$ and $B$ are normals, then both their statements are false, which means one of them (either) told a lie but is not a knave.
+            \end{enumerate}
+            Therefore, by cases, we can say that one of them told the truth but is not a knight, or that one of them told a lie but is not a knave.
+
+            This natural language proof can also be directly translated into a formal proof.
+        \end{frame}
+    }
+    \section{Question 4}
+    {
+        \begin{frame}{Question 4}
+            Let $P(i, j)$ represent the proposition that the $i^{th}$ pigeon is sitting in the $j^{th}$ hole, where $i \in \{1\dots n + 1\}$ and $j \in \{1\dots n\}$.
+
+            The Pigeonhole principle states that, if there are $n + 1$ pigeons and $n$ holes, and every pigeon sits in exactly one hole, then there is a hole occupied by more than one pigeon. To convert this into a PL formula, let us convert each side of the implication into PL first.
+
+            Every pigeon sits in at least one hole can be expressed in PL as:
+            \begin{equation*}
+                \bigwedge\limits_{i = 1}^{n + 1} \bigvee\limits_{j = 1}^{n} P(i, j)
+            \end{equation*}
+            Here the inner disjunction refers to the $i^{th}$ pigeon sitting in some hole, and the outer conjuction makes it so that every pigeon must sit in some hole. Call this condition $F$.
+        \end{frame}
+        \begin{frame}{Question 4}
+            We also need no pigeon to sit in multiple holes. Say pigeon $i$ sits in holes $j$ and $k$ with $j < k$. The formula $P(i, j) \land P(i, k)$ represents this scenario. There exists a pigeon sitting in multiple holes therefore becomes:
+            \begin{equation*}
+                \bigvee\limits_{i = 1}^{n + 1} \bigvee\limits_{\substack{j, k = 1\\j < k}}^{n} \left(P(i, j) \land P(i, k)\right)
+            \end{equation*}
+            Here, the inner disjunction refers to the $i^{th}$ pigeon sitting in multiple holes and the outer disjunction refers to there existing a pigeon sitting in multiple holes.
+            
+            Negating this, we get the condition for no pigeon to sit in multiple holes:
+            \begin{equation*}
+                \bigwedge\limits_{i = 1}^{n + 1} \bigwedge\limits_{\substack{j, k = 1\\j < k}}^{n} \left(\neg P(i, j) \lor \neg P(i, k)\right)
+            \end{equation*}
+            Call this condition $G$.
+        \end{frame}
+        \begin{frame}{Question 4}
+            Now, say hole $k$ is occupied by pigeons $i$ and $j$ with $i < j$. We then have $P(i, k) \land P(j, k)$. There exists a hole occupied by more than one pigeon therefore becomes:
+            \begin{equation*}
+                \bigvee\limits_{k = 1}^{n}\bigvee\limits_{\substack{i, j = 1\\i < j}}^{n + 1} \left(P(i, k) \land P(j, k)\right)
+            \end{equation*}
+            Here, the inner disjunction refers to the $k^{th}$ hole being occupied by more than one pigeon and the outer disjunction refers to there existing a hole occupied by multiple pigeons. Call this condition $H$.
+            
+            The Pigeonhole Principle therefore becomes:
+            \begin{equation*}
+                F \land G \implies H
+            \end{equation*}
+        \end{frame}
+    }
+    \section{Question 5}
+    {
+        \begin{frame}{Question 5}
+            % We will use\footnote{It has been used implicitly in multiple places in the slides. For those who want a more solid grounding on the formal proof system, \href[]{https://www.cse.iitb.ac.in/~akg/courses/2023-logic/}{check this out}.} the following proof rule along with the proof rules mentioned in the slides (call it \textit{By Cases}).
+            % \begin{equation*}
+            %     \frac{\mathcal{H} \cup \{\varphi\} \vdash \psi, \mathcal{H} \cup \{\neg \varphi\} \vdash \psi}{\mathcal{H} \vdash \psi}
+            % \end{equation*}
+            Proof:         
+            \begin{enumerate}
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p, p\} \vdash p$ (Assumption)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p, p\} \vdash \neg p$ (Assumption)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p, p\} \vdash \bot$ ($\bot$ introduction on 1, 2)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p, p\} \vdash q$ ($\bot$ elimination on 3)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash p \implies q$ ($\implies$ intro on 4)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash (p \implies q) \implies q$ (Ass.)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash q$ (Modus Ponens on 5, 6)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash q \implies p$ (Assumption)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash p$ (Modus Ponens on 7, 8)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash \neg p$ (Assumption)
+                \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash \bot$ ($\bot$ introduction on 9, 10)
+                \item $\{(p \implies q) \implies q, q \implies p\} \vdash \neg \neg p$ (By contradiction on 11)
+                \item $\{(p \implies q) \implies q, q \implies p\} \vdash p$ ($\neg \neg$ elimination on 12)
+                \item $\{(p \implies q) \implies q\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 13)
+                \item $\emptyset \vdash \left[(p \implies q) \implies q\right] \implies \left[(q \implies p) \implies p\right]$ ($\implies$ intr on 14)
+                % \item $\{(p \implies q) \implies q\} \vdash q \lor \neg q$ (Excluded Middle)
+                % \item $\{(p \implies q) \implies q, q\} \vdash q$ (Assumption)
+                % \item $\{(p \implies q) \implies q, q\} \vdash p \lor q$ ($\lor$ introduction on 3)
+                % \item $\{(p \implies q) \implies q, \neg q\} \vdash \neg q$ (Assumption)
+                % \item $\{(p \implies q) \implies q, \neg q\} \vdash (p \implies q) \implies q$ (Assumption)
+                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p \implies q$ (Modus Tollens on 3, 4)
+                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p$ (Modus Tollens on 3, 5)
+                % \item $\{(p \implies q) \implies q, \neg q\} \vdash p \lor q$ ($\lor$ introduction on 6)
+                % \item $\{(p \implies q) \implies q\} \vdash p \lor q$ (By Cases on 2, 7)
+            \end{enumerate}
+            $\qed$
+        \end{frame}
+        % \begin{frame}{Question 5}
+        %     \begin{enumerate}
+        %         \setcounter{enumi}{8}
+        %         \item $\{(p \implies q) \implies q, q \implies p, p\} \vdash p$ (Assumption)
+        %         \item $\{(p \implies q) \implies q, p\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 9)
+        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash q$ (Assumption)
+        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash q \implies p$ (Assumption)
+        %         \item $\{(p \implies q) \implies q, q, q \implies p\} \vdash p$ (Modus Ponens on 11, 12)
+        %         \item $\{(p \implies q) \implies q, q\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 13)
+        %         \item $\{(p \implies q) \implies q\} \vdash (q \implies p) \implies p$ ($\lor$ elim on 8, 10, 14)
+        %         \item $\vdash \left[(p \implies q) \implies q\right] \implies \left[(q \implies p) \implies p\right]$ ($\implies$ intro on 15)
+        %     \end{enumerate}
+        %     $\qed$
+        % \end{frame}
+    }
+    \section{Question 6}
+    {
+        \begin{frame}{Question 6}
+            We will use the following proof rule (which has often been used implicitly in the slides) along with the proof rules mentioned in the slides (Call it \textit{Monotonicity}). This rule follows as any proof valid for $\mathcal{H}$ will also be valid for any superset of it.
+            \begin{equation*}
+                \mathcal{H} \subseteq \mathcal{H}' \implies \frac{\mathcal{H} \vdash \varphi}{\mathcal{H}' \vdash \varphi}
+            \end{equation*}
+
+            Proof:
+            \begin{enumerate}
+                \item $\mathcal{H} \vdash A \implies B$ (Premise)
+                \item $\mathcal{H} \vdash C \lor A$ (Premise)
+                \item $\mathcal{H} \cup \{C\} \vdash C$ (Assumption)
+                \item $\mathcal{H} \cup \{C\} \vdash B \lor C$ ($\lor$ introduction on 3)
+                \item $\mathcal{H} \cup \{A\} \vdash A$ (Assumption)
+                \item $\mathcal{H} \cup \{A\} \vdash A \implies B$ (Monotonicity on 1)
+                \item $\mathcal{H} \cup \{A\} \vdash B$ (Modus Ponens on 5, 6)
+                \item $\mathcal{H} \cup \{A\} \vdash B \lor C$ ($\lor$ introduction on 7)
+                \item $\mathcal{H} \vdash B \lor C$ ($\lor$ elimination on 2, 4, 8)
+            \end{enumerate}
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 7}
+    {
+        \begin{frame}{Question 7}
+            Proof:
+            \begin{enumerate}
+                \item $\mathcal{H} \vdash A \implies C$ (Premise)
+                \item $\mathcal{H} \vdash B \implies C$ (Premise)
+                \item $\mathcal{H} \cup \{A \lor B\} \vdash A \lor B$ (Assumption)
+                \item $\mathcal{H} \cup \{A \lor B, A\} \vdash A$ (Assumption)
+                \item $\mathcal{H} \cup \{A \lor B, A\} \vdash A \implies C$ (Monotonicity on 1)
+                \item $\mathcal{H} \cup \{A \lor B, A\} \vdash C$ (Modus Ponens on 4, 5)
+                \item $\mathcal{H} \cup \{A \lor B, B\} \vdash B$ (Assumption)
+                \item $\mathcal{H} \cup \{A \lor B, B\} \vdash B \implies C$ (Monotonicity on 2)
+                \item $\mathcal{H} \cup \{A \lor B, B\} \vdash C$ (Modus Ponens on 7, 8)
+                \item $\mathcal{H} \cup \{A \lor B\} \vdash C$ ($\lor$ elimination on 3, 6, 9)
+                \item $\mathcal{H} \vdash (A \lor B) \implies C$ ($\implies$ intro on 10)
+            \end{enumerate}
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 8}
+    {
+        % \begin{frame}{Question 8}
+        %     We assume that "rules of natural deduction corresponding to disjunction and negation" include the proof rule known as \textit{Unit Resolution}.
+        %     \begin{equation*}
+        %         \frac{\mathcal{H} \vdash \neg\varphi \lor \psi, \mathcal{H} \vdash \varphi}{\mathcal{H} \vdash \psi}
+        %     \end{equation*}
+        %     % This can be proven using all the rules as follows:
+        %     and the proof rule known as \textit{Tautology}
+        %     \begin{equation*}
+        %         \frac{}{\mathcal{H}\vdash \neg\varphi \lor \varphi}
+        %     \end{equation*}
+        %     in addition to the other rules covered in the slides.
+
+        %     We abuse notation slightly, and use $\mathcal{L}$ to also refer to the set of axioms of $\mathcal{L}$.
+        % \end{frame}
+        % \begin{frame}{Question 8}
+        %     We will use the derived rule known as \textit{Unit Resolution}.
+        %     \begin{equation*}
+        %         \frac{\mathcal{H} \vdash \neg\varphi \lor \psi, \mathcal{H} \vdash \varphi}{\mathcal{H} \vdash \psi}
+        %     \end{equation*}
+        %     % \vspace*{-5pt}
+        %     Proof:
+        %     \begin{enumerate}
+        %         \item $\mathcal{H} \vdash \neg \varphi \lor \psi$ (Premise)
+        %         \item $\mathcal{H} \vdash \varphi$ (Premise)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \varphi$ (Assumption)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \neg \varphi$ (Assumption)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \neg \varphi\} \vdash \bot$ ($\bot$ introduction on 3, 4)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \psi$ (Assumption)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \neg \psi$ (Assumption)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi, \psi\} \vdash \bot$ ($\bot$ introduction on 6, 7)
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi\} \vdash \neg \varphi \lor \psi$ (Monotonicity on 1)
+        %     \end{enumerate}
+        % \end{frame}
+        % \begin{frame}{Question 8}
+        %     \begin{enumerate}
+        %         \setcounter{enumi}{10}
+        %         \item $\mathcal{H} \cup \{\varphi, \neg \psi\} \vdash \bot$ ($\lor$ elimination on 9, 5, 8)
+        %         \item $\mathcal{H} \cup \{\varphi\} \vdash \neg \neg \psi$ (By contradiction on 10)
+        %         \item $\mathcal{H} \cup \{\varphi\} \vdash \psi$ ($\neg \neg$ elimination on 11)
+        %         \item $\mathcal{H} \vdash \varphi \implies \psi$ ($\implies$ introduction on 12)
+        %         \item $\mathcal{H} \vdash \psi$ (Modus Ponens on 2, 13)
+        %     \end{enumerate}
+        %     $\qed$
+
+        %     We abuse notation slightly, and use $\mathcal{L}$ to also refer to the set of axioms of $\mathcal{L}$.
+        %     For any formula $\varphi$, note that $\neg \left(\neg \varphi \lor \varphi\right) \lor (\varphi \lor \varphi) \in \mathcal{L}$. We show that $\mathcal{L} \vdash \varphi$.
+
+        %     Proof:
+        %     \begin{enumerate}
+        %         \item $\mathcal{L} \vdash \neg \left(\neg \varphi \lor \varphi\right) \lor (\varphi \lor \varphi)$ (Assumption)
+        %         \item $\mathcal{L} \vdash \neg \varphi \lor \varphi$ (Excluded Middle)
+        %         \item $\mathcal{L} \vdash \varphi \lor $
+        %     \end{enumerate}
+        % \end{frame}
+        \begin{frame}{Question 8}
+            We abuse notation slightly by using $\mathcal{L}$ to also refer to the axiom set. For any formulae $A$, $B$, $C$, we have $\neg \left(A \lor B\right) \lor (B \lor C) \in \mathcal{L}$. We also assume that the proof rules of $\bot$, $\lor$ and $\neg$ are still present in this system.
+
+            We have to show that for any formula $F$, $\mathcal{L} \vdash F$.
+
+            We choose $A = \neg F, B = \bot, C = F$.
+
+            Proof:
+            \begin{enumerate}
+                \item $\mathcal{L} \vdash \neg (\neg F \lor \bot) \lor (\bot \lor F)$ (Assumption)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg F$ (Assumption)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg F \lor \bot$ ($\lor$ introduction on 3)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg (\neg F \lor \bot)$ (Assumption)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \bot$ ($\bot$ introduction on 4)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot)\} \vdash \neg \neg F$ (By contradiction on 5)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot)\} \vdash F$ ($\neg \neg$ elimination on 6)
+            \end{enumerate}
+        \end{frame}
+        \begin{frame}{Question 8}
+            \begin{enumerate}
+                \setcounter{enumi}{7}
+                \item $\mathcal{L} \cup \{\bot \lor F\} \vdash \bot \lor F$ (Assumption)
+                \item $\mathcal{L} \cup \{\bot \lor F, \bot\} \vdash \bot$ (Assumption)
+                \item $\mathcal{L} \cup \{\bot \lor F, \bot \} \vdash F$ ($\bot$ elimination on 9)
+                \item $\mathcal{L} \cup \{\bot \lor F, F\} \vdash F$ (Assumption)
+                \item $\mathcal{L} \cup \{\bot \lor F\} \vdash F$ ($\lor$ elimination on 8, 10, 11)
+                \item $\mathcal{L} \vdash F$ ($\lor$ elimination on 1, 7, 12)
+            \end{enumerate}
+            $\qed$
+        \end{frame}
+    }
+\end{document}
