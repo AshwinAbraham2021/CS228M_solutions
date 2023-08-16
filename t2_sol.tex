@@ -1,0 +1,228 @@
+% AUTHOR: ASHWIN ABRAHAM
+
+\documentclass{beamer}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage{hyperref}
+\hypersetup
+{
+colorlinks=true,
+linkcolor=blue,
+filecolor=magenta,      
+urlcolor=cyan,
+pdftitle={Parameterized verification through view abstraction},
+pdfpagemode=FullScreen,
+}
+\usepackage[utf8]{inputenc}
+
+
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+
+\title[] 
+{\textbf{CS 228 (M) - Logic in CS}\\Tutorial II - Solutions}
+
+
+\author[Ashwin Abraham] 
+{Ashwin Abraham}
+
+\institute[] 
+{
+    IIT Bombay
+}
+
+\date[2023]
+{16th August, 2023}
+
+
+
+\begin{document}
+    \frame{\titlepage}
+
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents    
+    \end{frame}
+
+    \section{Question 1}
+    {
+        \begin{frame}{Question 1}
+            We abuse notation and use $\mathcal{P}$ to also refer to the set of axioms of $\mathcal{P}$. For any formulae $A, B$ of $\mathcal{P}$, we have $(A \implies B) \in \mathcal{P}$. 
+            
+            Let $p$ be a propositional variable of $\mathcal{P}$, and choose $A = p \lor \neg p$, and let $B$ be $\bot$. We shall show that $\mathcal{L} \vdash \bot$, ie that $\mathcal{L}$ is inconsistent. 
+
+            Proof:
+            \begin{enumerate}
+                \item $\mathcal{L} \vdash (p \lor \neg p) \implies \bot$ (Premise)
+                \item $\mathcal{L} \vdash p \lor \neg p$ (Excluded Middle)
+                \item $\mathcal{L} \vdash \bot$ (Modus Ponens on 1, 2)
+            \end{enumerate}
+            $\qed$
+        \end{frame}
+    }
+
+    \section{Question 2}
+    {
+        \begin{frame}{Question 2}
+            \vspace*{-4pt}
+            We assume the set of all connectives is $\{\top, \bot, \neg, \land, \lor, \implies\}$.
+
+            To show that a subset of these connectives is adequate, we need to prove that for every formula constructed from the original set of connectives there is an equivalent formula constructed from the connectives in the subset. This can be proven via structural induction over the formulae.
+
+            \begin{enumerate}
+                \item To show that $\{\neg, \land\}$ is adequate, we proceed by structural induction.
+                
+                Base Case:
+
+                We have $\top \equiv \neg (p \land \neg p)$, $\bot \equiv p \land \neg p$, and $p \equiv p$
+
+                Inductive Steps:
+
+                Say $\varphi$ and $\psi$ are formulae constructed from the original set of connectives that have equivalent formulae that use only $\neg$ and $\land$. Let these equivalent formulae be $\varphi'$ and $\psi'$ respectively. 
+                
+                We shall show that every formula constructed from $\varphi$ and $\psi$ have equivalent formulae that use only $\neg$ and $\land$.
+                \begin{itemize}
+                    \item $\neg \varphi \equiv \neg \varphi'$
+                    \item $\varphi \land \psi \equiv \varphi' \land \psi'$
+                    \item $\varphi \lor \psi \equiv \neg (\neg \varphi' \land \neg \psi')$
+                    \item $\varphi \implies \psi \equiv \neg (\varphi' \land \neg \psi')$
+                \end{itemize} 
+            \end{enumerate}
+        \end{frame}
+        \begin{frame}{Question 2}
+            Since $\varphi'$ and $\psi'$ contain only $\neg$ and $\land$, the formulae on the RHS also contain only $\neg$ and $\psi'$, and therefore the induction step is completed. Therefore, every formula can be rewritten into an equivalent formula that uses only $\neg$ and $\land$.
+
+            $\qed$
+
+            To show that $\{\neg, \implies\}$ and $\{\implies, \bot\}$ are also adequate sets we follow a similiar method. The equivalences that we will use are:
+            \begin{itemize}
+                \item $\top \equiv p \implies p$
+                \item $\bot \equiv \neg (p \implies p)$
+                \item $\varphi \land \psi \equiv \neg (\varphi \implies \neg \psi)$
+                \item $\varphi \lor \psi \equiv (\neg \varphi \implies \psi$)
+                \item $\neg \varphi \equiv (\varphi \implies \bot)$
+                \item $\varphi \land \psi \equiv \left(\left[\varphi \implies (\psi \implies \bot)\right] \implies \bot\right)$
+                \item $\varphi \lor \psi \equiv (\left[\varphi \implies \bot\right] \implies \psi)$
+            \end{itemize}
+            $\qed$
+        \end{frame}
+        \begin{frame}{Question 2}
+            \begin{enumerate}
+                \setcounter{enumi}{1}
+                \item We shall show that for any $C \subseteq \{\top, \bot, \neg, \land, \lor, \implies\}$, if $\bot \notin C$ and $\neg \notin C$, then $C$ cannot be adequate (This is equivalent to proving that if $C$ is adequate then it contains either $\neg$ or $\bot$).
+                
+                Before this, notice that if $C \subseteq C' \subseteq \{\top, \bot, \neg, \land, \lor, \implies\}$ and if $C$ is adequate, then clearly $C'$ is adequate too. So we shall prove the above statement by showing that $\{\top, \land, \lor, \implies\}$ is not adequate. We shall do this by showing that no formula made out of these connectives is equivalent to $\bot$.
+
+                \textbf{Lemma:}
+
+                For any formula made out of $\{\top, \land, \lor, \implies\}$, setting all the propositional variables to $1$ always results in the overall formula having a truth value of $1$.
+
+                Note that this immediately shows that no formula constructed only out of $\{\land, \lor, \implies\}$ can be equivalent to $\bot$.
+
+                We shall prove this lemma via structural induction.
+            \end{enumerate}
+        \end{frame}
+        \begin{frame}{Question 2}
+            Base Case:
+
+            If the formula just consists of a single propositional variable $p$ or is just $\top$, the result clearly follows.
+
+            Inductive Step:
+
+            Say $\varphi$ and $\psi$ are formulae constructed only with $\{\top, \land, \lor, \implies\}$ and setting all the propositional variables to $1$ results in the truth values of both $\varphi$ and $\psi$ being $1$. The formulae we can construct from $\varphi$ and $\psi$ are $\varphi \land \psi$, $\varphi \lor \psi$ and $\varphi \implies \psi$. If we set all propositional variables to 1, then by the inductive hypothesis, the truth value of $\varphi$ and $\psi$ also become 1, and it can be seen that the truth values of the new formulae are also 1.
+
+            Therefore, by structural induction, the lemma is proven and with it we have proved that $\{\top, \land, \lor, \implies\}$ is inadequate.
+
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 3}
+    {
+        \begin{frame}{Question 3}
+            The following equivalences (which can be verified via truth tables) imply that $\downarrow$ (NAND) is complete, ie it can express all binary connectives.
+            \begin{enumerate}
+                \item $p \land q \equiv (p \downarrow q) \downarrow (p \downarrow q)$
+                \item $p \lor q \equiv (p \downarrow p) \downarrow (q \downarrow q)$
+                \item $p \implies q \equiv p \downarrow (q \downarrow q)$
+            \end{enumerate}
+            $\downarrow$ can also express the unary and nullary connectives ($\neg$ and $\bot$) respectively:
+            \begin{enumerate}
+                \item $\neg p \equiv p \downarrow p$
+                \item $\top \equiv p \downarrow (p \downarrow p)$
+                \item $\bot \equiv (p \downarrow (p \downarrow p)) \downarrow (p \downarrow (p \downarrow p))$
+            \end{enumerate}
+            We can show, via structural induction, that a subset of connectives can express all connectives (not just binary ones) iff it is adequate.
+        \end{frame}
+    }
+    \section{Question 4}
+    {
+        \begin{frame}{Question 4}
+            The truth table for $\oplus$ is as follows:
+            \begin{displaymath}
+                \begin{array}{|c c|c|}
+                    % |c c|c| means that there are three columns in the table and
+                    % a vertical bar ’|’ will be printed on the left and right borders,
+                    % and between the second and the third columns.
+                    % The letter ’c’ means the value will be centered within the column,
+                    % letter ’l’, left-aligned, and ’r’, right-aligned.
+                    p & q & p \oplus q\\ % Use & to separate the columns
+                    \hline % Put a horizontal line between the table header and the rest.
+                    0 & 0 & 0\\
+                    0 & 1 & 1\\
+                    1 & 0 & 1\\
+                    1 & 1 & 0\\
+                \end{array}
+            \end{displaymath}
+            We will show by structural induction that any formula $\varphi$ constructed from two propositional variables (say $p$, $q$) will have an even number of $1$s in its truth table. This means a formula like $p \land q$ that has an odd number of $1$s in its truth table cannot be expressed via $\oplus$, ie $\oplus$ is not complete\footnote{We will prove something stronger, as our proof will also allow $\top$, $\bot$ to be used - we prove $\{\oplus,\top, \bot\}$ is neither complete nor adequate}.
+
+            Base Case:
+
+            $\top$, $\bot$, $p$ and $q$ all have an even number of $1$s in their truth tables.
+        \end{frame}
+        \begin{frame}{Question 4}
+            Inductive Step:
+
+            Say $\varphi$ and $\psi$ are formulae formed with $\oplus$. By the inductive hypothesis, they have an even number of $1$s in their truth tables. Let's say $\varphi$ and $\psi$ are both $0$ in $i$ places, are both $1$ in $j$ places, $\varphi$ is $0$ and $\psi$ is $1$ in $k$ places and $\varphi$ is $1$ while $\psi$ is $0$ in $l$ places. By the inductive hypothesis, $j + k$ and $j + l$ are even. Therefore, their sum, $2j + k + l$ is even, which means $k + l$ is also even. By truth table, $\varphi \oplus \psi$ is $1$ in $k + l$ places, and therefore its truth table also has an even number of $1$s.
+
+            Therefore, any formula formed this way has an even number of $1$s, and hence $\oplus$ is not complete\footnote{As homework, you can show that all formulae whose truth tables contain an even number of $1$s can be expressed with $\{\top, \bot, \oplus\}$}.
+
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 5}
+    {
+        \begin{frame}{Question 5}
+            % We will use the soundness of our Formal Proof System, which has been proven in class by structural induction.
+
+            First, we will show that satisfiablility implies consistency, ie if $\mathcal{F}$ is satisfiable ($\models \mathcal{F}$), then it is consistent ($\mathcal{F} \nvdash \bot$).
+
+            Assume, this was not the case and there exists an assignment $\alpha$ such that $\alpha \models \mathcal{F}$ and $\mathcal{F} \vdash \bot$. Since our Formal Proof System is sound\footnote{This was proven in class by structural induction}, we have $\mathcal{F} \models \bot$, and therefore, we have an assignment $\alpha$ such that $\alpha \models \bot$, which is not possible! Therefore, satisfiablility implies consistency.
+
+            Now, we will show the reverse, ie if $\mathcal{F}$ is consistent ($\mathcal{F} \nvdash \bot$) then it must be satisfiable ($\models \mathcal{F}$). Since our Formal Proof System is complete\footnote{\href[]{https://www.cse.iitb.ac.in/~akg/courses/2023-logic/lec-08-complete.pdf}{The proof of this is quite complex}}, we have $\mathcal{F} \nvDash \bot$, ie there exists an assignment $\alpha$ such that $\alpha \models \mathcal{F}$ and $\alpha \nvDash \bot$. The latter is always true, but the former shows that $\mathcal{F}$ is satisfiable ($\models \mathcal{F}$).
+
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 6}
+    {
+        \begin{frame}{Question 6}
+            We know that $\mathcal{F}$ is inconsistent, ie $\mathcal{F} \vdash \bot$
+            \begin{enumerate}
+                \item By the previous result, $\mathcal{F}$ must be unsatisfiable, ie for all assignments $\alpha$, $\alpha \nvDash \mathcal{F}$. Now, $\mathcal{F}$ can be written as $\mathcal{F}_{G} \cup {G}$, ie $\forall \alpha, \alpha \nvDash \mathcal{F}_{G} \cup {G}$, which can be rewritten as $\forall \alpha, \neg (\alpha \models \mathcal{F}_{G}) \lor \alpha \nvDash G$. This can be further rewritten as $\forall \alpha, \alpha \models \mathcal{F}_{G} \implies \alpha \models \neg G$, which is the definition of $\mathcal{F}_{G} \models \neg G$. Now, since the Formal Proof System is complete, this also means that $\mathcal{F}_{G} \vdash \neg G$.
+                
+                $\qed$
+                \item \begin{enumerate}
+                    \item $\mathcal{F}_{G} \cup \{G\} \vdash \bot$ (Premise)
+                    \item $\mathcal{F}_{G} \vdash \neg G$ ($\neg$ introduction on 1)
+                \end{enumerate}
+                $\qed$
+            \end{enumerate}
+        \end{frame}
+    }
+\end{document}

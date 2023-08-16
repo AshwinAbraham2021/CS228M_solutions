@@ -185,7 +185,7 @@ pdfpagemode=FullScreen,
                 \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash p$ (Modus Ponens on 7, 8)
                 \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash \neg p$ (Assumption)
                 \item $\{(p \implies q) \implies q, q \implies p, \neg p\} \vdash \bot$ ($\bot$ introduction on 9, 10)
-                \item $\{(p \implies q) \implies q, q \implies p\} \vdash \neg \neg p$ (By contradiction on 11)
+                \item $\{(p \implies q) \implies q, q \implies p\} \vdash \neg \neg p$ ($\neg$ introduction on 11)
                 \item $\{(p \implies q) \implies q, q \implies p\} \vdash p$ ($\neg \neg$ elimination on 12)
                 \item $\{(p \implies q) \implies q\} \vdash (q \implies p) \implies p$ ($\implies$ intro on 13)
                 \item $\emptyset \vdash \left[(p \implies q) \implies q\right] \implies \left[(q \implies p) \implies p\right]$ ($\implies$ intr on 14)
@@ -247,12 +247,12 @@ pdfpagemode=FullScreen,
 
             Proof:
             \begin{enumerate}
-                \item $\mathcal{L} \vdash \neg (\neg F \lor \bot) \lor (\bot \lor F)$ (Assumption)
+                \item $\mathcal{L} \vdash \neg (\neg F \lor \bot) \lor (\bot \lor F)$ (Premise)
                 \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg F$ (Assumption)
                 \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg F \lor \bot$ ($\lor$ introduction on 3)
                 \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \neg (\neg F \lor \bot)$ (Assumption)
                 \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot), \neg F\} \vdash \bot$ ($\bot$ introduction on 4)
-                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot)\} \vdash \neg \neg F$ (By contradiction on 5)
+                \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot)\} \vdash \neg \neg F$ ($\neg$ introduction on 5)
                 \item $\mathcal{L} \cup \{\neg (\neg F \lor \bot)\} \vdash F$ ($\neg \neg$ elimination on 6)
             \end{enumerate}
         \end{frame}
