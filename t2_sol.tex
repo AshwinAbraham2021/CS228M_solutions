@@ -214,7 +214,7 @@ pdfpagemode=FullScreen,
         \begin{frame}{Question 6}
             We know that $\mathcal{F}$ is inconsistent, ie $\mathcal{F} \vdash \bot$
             \begin{enumerate}
-                \item By the previous result, $\mathcal{F}$ must be unsatisfiable, ie for all assignments $\alpha$, $\alpha \nvDash \mathcal{F}$. Now, $\mathcal{F}$ can be written as $\mathcal{F}_{G} \cup {G}$, ie $\forall \alpha, \alpha \nvDash \mathcal{F}_{G} \cup {G}$, which can be rewritten as $\forall \alpha, \neg (\alpha \models \mathcal{F}_{G}) \lor \alpha \nvDash G$. This can be further rewritten as $\forall \alpha, \alpha \models \mathcal{F}_{G} \implies \alpha \models \neg G$, which is the definition of $\mathcal{F}_{G} \models \neg G$. Now, since the Formal Proof System is complete, this also means that $\mathcal{F}_{G} \vdash \neg G$.
+                \item By the previous result, $\mathcal{F}$ must be unsatisfiable, ie for all assignments $\alpha$, $\alpha \nvDash \mathcal{F}$. Now, $\mathcal{F}$ can be written as $\mathcal{F}_{G} \cup \{G\}$, ie $\forall \alpha, \alpha \nvDash \mathcal{F}_{G} \cup \{G\}$, which can be rewritten as $\forall \alpha, \neg (\alpha \models \mathcal{F}_{G}) \lor \alpha \nvDash G$. This can be further rewritten as $\forall \alpha, \alpha \models \mathcal{F}_{G} \implies \alpha \models \neg G$, which is the definition of $\mathcal{F}_{G} \models \neg G$. Now, since the Formal Proof System is complete, this also means that $\mathcal{F}_{G} \vdash \neg G$.
                 
                 $\qed$
                 \item \begin{enumerate}
