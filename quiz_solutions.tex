@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage[inline]{enumitem}
+\usepackage{cancel}
+\usepackage{soul}
+\usepackage[colorlinks = true,
+            linkcolor = blue,
+            urlcolor  = blue,
+            citecolor = blue,
+            anchorcolor = blue]{hyperref}
+
+\usepackage{centernot}
+
+\newtheorem{theorem}{Theorem}
+\setlength\parindent{0pt}
+\let\emptyset\varnothing
+\newcommand{\rank}{\operatorname{rank}}
+%\renewcommand{\span}{\operatorname{span}}
+
+% \usepackage{xcolor}
+% \definecolor{mybgcolor}{RGB}{50, 50, 50} %46, 51, 63
+
+% \usepackage{pagecolor}
+% \pagecolor{mybgcolor}
+% \color{white}
+
+\usepackage{titlesec}
+\titleformat{\section}[block]
+  {\normalfont\scshape}{\S\thesection}{0.25cm}{\large}
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={170mm,257mm},
+	left=20mm,
+	top=20mm,
+}
+
+\title{CS 228 (M): Logic in CS\\2022 Quiz 1 Solutions}				% change
+\author{Ashwin Abraham}%\\
+%\small TA for D1-T5}
+\date{21st August, 2023}		% change
+
+\begin{document}
+\maketitle
+
+% \hrulefill
+
+% \begin{center}
+% 	\textsc{Disclaimer}
+% \end{center}
+% These are \textbf{not} complete solutions and should not be regarded as such. The purpose of this is to basically get you started and you must fill in the gaps. To be more explicit, if what you care about is marks, then just the solutions written here won't suffice.
+
+% \hrulefill
+
+\begin{enumerate} 
+	\item It is satisfiable, the assignment $\{p \rightarrow 0, q \rightarrow 1, r \rightarrow 1\}$ is a satisfying assignment.
+	\item It is valid, as can be verified by truth table.
+	\item \begin{enumerate}
+        \item $\{p \lor q, r\} \vdash p \lor q$ (Assumption)
+        \item $\{p \lor q, r, p\} \vdash p$ (Assumption)
+        \item $\{p \lor q, r, p\} \vdash r$ (Assumption)
+        \item $\{p \lor q, r, p\} \vdash p \land r$ ($\land$ introduction on (b) and (c))
+        \item $\{p \lor q, r, p\} \vdash (p \land r) \lor (q \land r)$ ($\lor$ introduction on (d))
+        \item $\{p \lor q, r, q\} \vdash q$ (Assumption)
+        \item $\{p \lor q, r, q\} \vdash r$ (Assumption)
+        \item $\{p \lor q, r, q\} \vdash q \land r$ ($\land$ introduction on (f) and (g))
+        \item $\{p \lor q, r, q\} \vdash (p \land r) \lor (q \land r)$ ($\lor$ introduction on (h))
+        \item $\{p \lor q, r\} \vdash (p \land r) \lor (q \land r)$ ($\lor$ elimination on (a), (e), (i))
+    \end{enumerate}
+    \item Drawing the parse tree, and using size to denote the depth (number of nodes from root to node, both inclusive) of the deepest node, we get the size as $8$.
+    \item Completeness would not be affected by adding new rules, so this would be complete. It would not be sound, however. To see this, note that by our normal proof rules we can derive $\mathcal{H} \vdash (p \lor \neg p) \lor \bot$. Now, using proof rule 2, we get $\mathcal{H} \vdash \bot$, which must be true for all $\mathcal{H}$, even satisfiable ones, that do not have $\mathcal{H} \vDash \bot$. So clearly our new proof system is no longer sound.
+    \item By truth table, you can conclude that the formula is valid, and therefore $\mathcal{H} \vDash \varphi$ for all $\mathcal{H}$. By the completeness of formal proof system, we have $\mathcal{H} \vdash \varphi$ for all $\mathcal{H}$. Therefore, we have (a), (b), (d), (e) as the answer.
+    \item Removing proof rules clearly cannot affect soundness. In this case, since LEM is a derived rule, completeness is not affected either (any proof step using LEM can be replaced by the sequence of steps that derives LEM).
+    \item Clearly, (c) and (d)
+    \item None, by the definition of Horn Formulae.
+    \item Not in syllabus
+    \item Not in syllabus
+    \item The size of a DNF is the number of clauses it contains. The DNF equivalent to the given formula is $(x \land \neg y) \lor (y \land \neg x)$, which has size 2.
+    \item None of the above.
+
+    Counterexamples:\begin{enumerate}
+        \item $p$ satisfies (a) but isn't valid
+        \item No conjunction of literals can ever be valid, so any valid DNF like $p \lor \neg p$ is a counterexample 
+        \item $(p \land \neg p) \lor p \lor \neg p$ is valid but doesn't satisfy (c)
+        \item $p \lor \neg p$ is valid but doesn't satisfy (d)
+    \end{enumerate}
+\end{enumerate}
+\end{document}

@@ -200,11 +200,11 @@ pdfpagemode=FullScreen,
         \begin{frame}{Question 5}
             % We will use the soundness of our Formal Proof System, which has been proven in class by structural induction.
 
-            First, we will show that satisfiablility implies consistency, ie if $\mathcal{F}$ is satisfiable ($\models \mathcal{F}$), then it is consistent ($\mathcal{F} \nvdash \bot$).
+            First, we will show that satisfiablility implies consistency, ie if $\mathcal{F}$ is satisfiable, then it is consistent ($\mathcal{F} \nvdash \bot$).
 
             Assume, this was not the case and there exists an assignment $\alpha$ such that $\alpha \models \mathcal{F}$ and $\mathcal{F} \vdash \bot$. Since our Formal Proof System is sound\footnote{\href[]{https://piazza.com/class_profile/get_resource/ll2d94w5rycho/lla32qmdpsv5f6}{The proof of this can be found here}}, we have $\mathcal{F} \models \bot$, and therefore, we have an assignment $\alpha$ such that $\alpha \models \bot$, which is not possible! Therefore, satisfiablility implies consistency.
 
-            Now, we will show the reverse, ie if $\mathcal{F}$ is consistent ($\mathcal{F} \nvdash \bot$) then it must be satisfiable ($\models \mathcal{F}$). Since our Formal Proof System is complete\footnote{\href[]{https://piazza.com/class_profile/get_resource/ll2d94w5rycho/lldbfyq5cfj16r}{The proof of this can be found here}}, we have $\mathcal{F} \nvDash \bot$, ie there exists an assignment $\alpha$ such that $\alpha \models \mathcal{F}$ and $\alpha \nvDash \bot$. The latter is always true, but the former shows that $\mathcal{F}$ is satisfiable ($\models \mathcal{F}$).
+            Now, we will show the reverse, ie if $\mathcal{F}$ is consistent ($\mathcal{F} \nvdash \bot$) then it must be satisfiable. Since our Formal Proof System is complete\footnote{\href[]{https://piazza.com/class_profile/get_resource/ll2d94w5rycho/lldbfyq5cfj16r}{The proof of this can be found here}}, we have $\mathcal{F} \nvDash \bot$, ie there exists an assignment $\alpha$ such that $\alpha \models \mathcal{F}$ and $\alpha \nvDash \bot$. The latter is always true, but the former shows that $\mathcal{F}$ is satisfiable.
 
             $\qed$
         \end{frame}

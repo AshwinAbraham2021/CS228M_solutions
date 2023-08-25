@@ -1,0 +1,204 @@
+% AUTHOR: ASHWIN ABRAHAM
+
+\documentclass{beamer}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage{hyperref}
+\hypersetup
+{
+colorlinks=true,
+linkcolor=blue,
+filecolor=magenta,      
+urlcolor=cyan,
+pdftitle={Parameterized verification through view abstraction},
+pdfpagemode=FullScreen,
+}
+\usepackage[utf8]{inputenc}
+
+
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+
+\title[] 
+{\textbf{CS 228 (M) - Logic in CS}\\Tutorial III - Solutions}
+
+
+\author[Ashwin Abraham] 
+{Ashwin Abraham}
+
+\institute[] 
+{
+    IIT Bombay
+}
+
+\date[2023]
+{24th August, 2023}
+
+
+
+\begin{document}
+    \frame{\titlepage}
+
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents    
+    \end{frame}
+
+    \section{Question 1}
+    {
+        \begin{frame}{Question 1}
+            This statement is \textbf{False}. An easy counterexample to this would be $\mathcal{F} = \{p, \neg p\}$ and $\mathcal{G} = \{q, \neg q\}$.
+        \end{frame}
+    }
+
+    \section{Question 2}
+    {
+        \begin{frame}{Question 2}
+            \vspace*{-4pt}
+            \begin{theorem}
+                A set of formulae $\Sigma$ is satisfiable iff every finite subset of it is satisfiable. 
+            \end{theorem}
+            \vspace*{-4pt}
+            This theorem is known as the \textbf{Compactness Theorem}.
+            \vspace*{-4pt}
+            \begin{proof}
+                Proving the backward direction is trivial, as clearly if $\Sigma$ is satisfiable then every finite subset of $\Sigma$ is satisfiable (indeed, every subset is satisfiable). Let us show that if $\Sigma$ is not satisfiable, then there exists a finite subset of it that is unsatisfiable (this suffices to show the forward direction). By the Completeness\footnote{For this proof to be airtight, our proof of completeness should not depend on the Compactness Theorem, even in the infinite case. Such \href{https://en.wikipedia.org/wiki/Propositional_calculus\#Sketch_of_completeness_proof}{proofs} do exist.} of our Formal Proof System, if $\Sigma$ is unsatisfiable, then it is inconsistent, ie $\Sigma \vdash \bot$. The proof of this statement can use only a finite number of formulae in $\Sigma$ (since all proofs are finite). Call this finite subset $\Sigma'$. Our proof of $\Sigma \vdash \bot$ will also show that $\Sigma' \vdash \bot$, and so this $\Sigma'$ is a finite subset of $\Sigma$ that is unsatisfiable.
+            \end{proof}
+        \end{frame}
+
+        \begin{frame}{Question 2}
+            Since $\mathcal{F}$ is inconsistent (and therefore also unsatisfiable), by the Compactness Theorem there exists a finite subset of $\mathcal{F}$ (say $\mathcal{F}'$) that is unsatisfiable (and therefore inconsistent). Since $\mathcal{F}$ is closed under conjunction $\left(\bigwedge\limits_{f \in \mathcal{F}'} f\right) \in \mathcal{F}$. Call this $F$. Clearly $\{F\} \equiv \mathcal{F}'$, and therefore $\{F\} \vdash \bot$. By $\bot$ elimination, for any formula $G$, we have $\{F\} \vdash \neg G$. Therefore, we have shown that there exists $F \in \mathcal{F}$ such that for any $G \in \mathcal{F}$, $\{F\} \vdash \neg G$. This is in fact a stronger statement than what we set out to prove!
+
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 3}
+    {
+        \begin{frame}{Question 3}
+            We have to show that if $F$ is not a contradiction and $G$ is not a tautology, and $\vDash (F \implies G)$, then there exists a formula $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$ and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
+    
+            Firstly, note that we do not need the statement that $F$ is not a contradiction and $G$ is not a tautology. If $F$ is a contradiction, then we can take $H = \bot$ and if $G$ is a tautology we can take $H = \top$.
+
+            Removing this clause from the question statement, we shall prove the rest via induction on $|Vars(F) - Vars(G)|$. Our inductive hypothesis will be if $|Vars(F) - Vars(G)| = k$ and $\vDash (F \implies G)$, then there exists $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$ and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
+
+            \textbf{Base Case}:
+
+            When $k = 0$, we have $Vars(F) \subseteq Vars(G)$, and therefore we can choose $H = F$, which satisfies all the conditions.
+        \end{frame}
+
+        \begin{frame}{Question 3}
+            % \textbf{Inductive Step}:
+
+            % Assume that for all formulae $F$ and $G$, $|Vars(F) - Vars(G)| = k$ and $\vDash (F \implies G)$, then there exists $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$ and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
+
+            % Now, say we have $|Vars(F) - Vars(G)| = k + 1$.
+            
+            % Say $q \in Vars(F) - Vars(G)$.
+            Before we proceed to the inductive step,
+
+            \textbf{Lemma}:
+
+
+            Say $q \in Vars(F) - Vars(G)$ and $\vDash (F \implies G)$. 
+            
+            Let $H = F[q/\bot] \lor F[q/\top]$. Then we have $\vDash (F \implies H)$ and $\vDash (H \implies G)$.
+
+            Note that for any formula $F$, $F[p/G]$ denotes the formula obtained by replacing all instances of $p$ in $F$ by $G$.
+
+            \textbf{Proof}:
+
+            Say an assignment $\alpha$ has $\alpha \vDash F$. If $\alpha(q) = 0$, then we have $\alpha \vDash F[q/\bot]$ and therefore $\alpha \vDash H$. On the other hand, if $\alpha(q) = 1$, then $\alpha \vDash F[q/\top]$ and we still have $\alpha \vDash H$. Therefore, we have $\alpha \vDash F \implies \alpha \vDash H$ for all $\alpha$, ie $F \implies H$ is valid, ie $\vDash (F \implies H)$.
+
+            Now, let us show the other part. Some notation first: For an assignment $\alpha$, $\alpha[q \rightarrow b]$ is an assignment identical to $\alpha$ except at $q$, where it is $b$. We have $\alpha[q \rightarrow 0] \vDash F \iff \alpha \vDash F[q/\bot]$, $\alpha[q \rightarrow 1] \vDash F \iff \alpha \vDash F[q/\top]$.
+        \end{frame}
+
+        \begin{frame}{Question 3}
+            Assume $\alpha \vDash H$. We have:
+            \begin{enumerate}
+                \item $\alpha \vDash F[q/\bot] \lor F[q/\top]$
+                \item  $\alpha[q \rightarrow 0] \vDash F \lor \alpha[q \rightarrow 1] \vDash F$
+                \item $\alpha[q \rightarrow 0] \vDash G \lor \alpha[q \rightarrow 1] \vDash G$ (Since $\forall \alpha, \alpha \vDash F \implies \alpha \vDash G$)
+            \end{enumerate}
+            Now, since $q \notin Vars(G)$, $\alpha[q \rightarrow b] \vDash G \iff \alpha \vDash G$, $b \in \{0, 1\}$. Therefore,
+            \begin{enumerate}
+                \setcounter{enumi}{3}
+                \item $\alpha \vDash G \lor \alpha \vDash G$
+                \item $\alpha \vDash G$
+            \end{enumerate}
+            Therefore, $\forall \alpha, \alpha \vDash H \implies \alpha \vDash G$, ie $\vDash (H \implies G)$
+
+            $\qed$
+        \end{frame}
+
+        \begin{frame}{Question 3}
+            Now, back to the main proof. Our inductive hypothesis is that for any formulae $F$ and $G$ if $|Vars(F) - Vars(G)| = k$ and $\vDash (F \implies G)$, then there exists $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$, and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
+
+            Assuming this, we have to prove the hypothesis for the case where $|Vars(F) - Vars(G)| = k + 1$. Let $q \in Vars(F) - Vars(G)$, and let $H = F[q/\top] \lor F[q/\bot]$. By the previous lemma, we have $\vDash (F \implies H)$ and $\vDash (H \implies G)$. Note that $|Vars(H) - Vars(G)| = k$. Applying the inductive hypothesis, there exists $H'$ such that $\vDash (H \implies H')$, $\vDash (H' \implies G)$ and $Vars(H') \subseteq Vars(H) \cap Vars(G)$. Using $\vDash (F \implies H)$ and the fact that $Vars(H) \subseteq Vars(F)$, we get $\vDash (F \implies H')$, $\vDash (H' \implies G)$, and $Vars(H') \subseteq Vars(F) \cap Vars(G)$. Therefore, the inductive hypothesis is proven for $k + 1$, and thus the statement in the question is also proven.
+
+            $\qed$
+        \end{frame}
+    }
+    \section{Question 4}
+    {
+        \begin{frame}{Question 4}
+            Firstly, note that the empty set $\emptyset$ is satisfiable (in fact, it is valid)\footnote{This is because all universally quantified propositions over the empty set are true - these are known as \href{https://en.wikipedia.org/wiki/Vacuous_truth}{vacuous truths}.}. 
+
+            Now, it can be easily shown that the set
+            \begin{equation*}
+                \Sigma_{n} = \{p_{1}, \dots p_{n}, \bigvee\limits_{i = 1}^{n} \neg p_{i}\}
+            \end{equation*} is an example of a minimal unsatisfiable set for $n \geq 1$.
+        \end{frame}
+    }
+    \section{Question 5}
+    {
+        \begin{frame}{Question 5}
+            (a) Mechanically keep calculating $Res^{n}(\psi)$ by resolution, until you find that $\emptyset \in Res^{*}(\psi) = Res^{3}(\psi)$. This correctly tells us that $\psi$ is unsatisfiable due to the soundness of the resolution proof system.
+
+            (b) Let us do resolution in a slightly different way. 
+            
+            Our algorithm is as follows:
+            \begin{enumerate}
+                \item If $Vars(\psi)$ is empty, then we can immediately conclude the satisfiability of $\psi$ by checking if $\emptyset \in \psi$.
+                \item If not, pick a variable $p \in Vars(\psi)$ such that resolution\footnote{We do not consider resolutions that lead to tautologies} can be done with pairs of clauses in $\psi$ with $p$ as pivot. 
+                \item If no such variable exists, then we are done with resolution, and we can check satisfiability by checking if $\emptyset \in \psi$.
+                \item If such a variable exists, replace $\psi$ with $R_{p}(\psi)$, where $R_{p}(\psi)$ is formed by removing all clauses that were involved in resolution from $\psi$ and replacing them with the newly generated resolved clauses.
+                \item Go to step 1
+            \end{enumerate}
+            % \textbf{Base Case}:
+
+            % This is the case $|Vars(\psi)| = 1$. Let $Vars(\psi) = \{p\}$. If $\psi \vdash \bot$, then $\psi$ must be $\{\{p\}, \{\neg p\}\}$. In this case, $R(\psi) = \{\emptyset\} \vdash \bot$
+        \end{frame}
+        \begin{frame}{Question 5}
+            \vspace{-5pt}
+            To show that this algorithm works, we show that $\psi$ and $R_{p}(\psi)$ are equisatisfiable, ie $\psi \vdash \bot \iff R_{p}(\psi) \vdash \bot$.
+
+            The reverse direction is easy to prove here, the clauses of $R(\psi)$ are either members of $\psi$ or are formed from $\psi$ by resolution, ie any proof that $R_{p}(\psi) \vdash \bot$ can easily be converted into a proof that $\psi \vdash \bot$ by replacing the steps assuming the resolved clauses with their resolutions.
+
+            For the forward direction, let us prove the contrapositive, ie $R_{p}(\psi)$ is satisfiable $\implies$ $\psi$ is satisfiable. 
+
+            Let $\psi = \{\{p\} \cup A_{i}: i \in \{1 \dots m\}\} \cup \{\{\neg p\} \cup B_{j}: j \in \{1 \dots n\}\} \cup C$\\where $A_{i}, B_{j}$ and $C$ do not contain $p$.
+
+            We have $R_{p}(\psi) = \{A_{i} \cup B_{j}: (i, j) \in [m] \times [n], A_{i} \cup B_{j}\ not\ a\ tautology\} \cup C$
+
+            Let's say some assignment $\alpha$ has $\alpha \vDash R_{p}(\psi)$. Firstly, clearly $\alpha \vDash C$. If $\alpha \vDash A_{i}$ for all $i \in [m]$, then $\alpha[p \rightarrow 0] \vDash \psi$. If there is some $k \in [m]$ such that $\alpha \nvDash A_{k}$, then for all $j \in [n]$, we have $\alpha \vDash A_{k} \cup B_{j}$ (this follows from the membership of the clause in $R_{p}(\psi)$ for non-tautological clauses and by definition for the tautologies). Since $\alpha \nvDash A_{k}$, we must have $\alpha \vDash B_{j}$, for all $j \in [n]$. Therefore, $\alpha[p \rightarrow 1] \vDash \psi$. Therefore, $\psi$ is satisfiable. $\qed$
+            % \textbf{Inductive Step}:
+
+            % Assume $|Vars(\psi)| = k + 1$, and $p \in Vars(\psi)$. By the inductive hypothesis, for any formula $\varphi$ with $|Vars(\varphi)| = k$, $\varphi \vdash \bot \implies R(\varphi) \vdash \bot$.
+
+            % Let $\psi = \psi_{p} \cup \psi_{\neg p} \cup \psi_{*}$, where $\psi_{p}$ is the set of clauses containing $p$, $\psi_{\neg p}$ is the set of clauses containing $\neg p$, and $\psi_{*}$ is the set of clauses containing neither. Also define $\psi'_{p}$ and $\psi'_{\neg p}$ formed by removing the literals containing $p$ from the clauses of $\psi_{p}$ and $\psi_{\neg p}$ respectively. Let $\psi' = \psi'_{p} \cup \psi'_{\neg p} \cup \psi_{*}$.
+
+            % % For any set $S$ of clauses not containing the literal $l$, define $S \cdot \{l\}$ as $\{s \cup \{l\}: s \in S\}$. We therefore have $\psi_{p} = \psi'_{p} \cdot \{p\}$ and $\psi_{\neg p} = \psi'_{\neg p} \cdot \{\neg p\}$. Note that for any $S$ not containing the literal $l$, $S \vDash S \cdot \{l\}$. 
+            % Note that $\psi' \vDash \psi$. Therefore, since $\psi \vdash \bot$, we have $\psi' \vdash \bot$, and hence by the inductive hypothesis, $R(\psi') \vdash \bot$. We can write $R(\psi) = R(\psi'_{p} \cup \psi'_{\neg p}) \cup R(\psi'_{p} \cup \psi_{*})\cup R(\psi'_{\neg p} \cup \psi_{*})$ and
+
+            % $R(\psi) = R(\psi'_{p} \cup \psi'_{\neg p}) \cup \left(R(\psi'_{p} \cup \psi_{*})\cdot\{p\}\right)\cup\left(R(\psi'_{\neg p} \cup \psi_{*})\cdot\{\neg p\}\right)$
+
+            % where $S \cdot \{l\} = \{s \cup \{l\}: s \in S\}$
+        \end{frame}
+    }
+\end{document}
