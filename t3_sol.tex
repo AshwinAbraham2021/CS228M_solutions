@@ -137,7 +137,11 @@ pdfpagemode=FullScreen,
         \end{frame}
 
         \begin{frame}{Question 3}
-            Now, back to the main proof. Our inductive hypothesis is that for any formulae $F$ and $G$ if $|Vars(F) - Vars(G)| = k$ and $\vDash (F \implies G)$, then there exists $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$, and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
+            Now, back to the main proof. 
+            
+            \textbf{Inductive Step}:
+
+            Our inductive hypothesis is that for any formulae $F$ and $G$ if $|Vars(F) - Vars(G)| = k$ and $\vDash (F \implies G)$, then there exists $H$ such that $\vDash (F \implies H)$, $\vDash (H \implies G)$, and $Vars(H) \subseteq Vars(F) \cap Vars(G)$.
 
             Assuming this, we have to prove the hypothesis for the case where $|Vars(F) - Vars(G)| = k + 1$. Let $q \in Vars(F) - Vars(G)$, and let $H = F[q/\top] \lor F[q/\bot]$. By the previous lemma, we have $\vDash (F \implies H)$ and $\vDash (H \implies G)$. Note that $|Vars(H) - Vars(G)| = k$. Applying the inductive hypothesis, there exists $H'$ such that $\vDash (H \implies H')$, $\vDash (H' \implies G)$ and $Vars(H') \subseteq Vars(H) \cap Vars(G)$. Using $\vDash (F \implies H)$ and the fact that $Vars(H) \subseteq Vars(F)$, we get $\vDash (F \implies H')$, $\vDash (H' \implies G)$, and $Vars(H') \subseteq Vars(F) \cap Vars(G)$. Therefore, the inductive hypothesis is proven for $k + 1$, and thus the statement in the question is also proven.
 
